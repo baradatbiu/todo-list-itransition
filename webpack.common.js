@@ -16,7 +16,7 @@ module.exports = {
         loader: "vue-loader",
       },
       {
-        test: /\.tsx?$/,
+        test: /\.ts$/,
         use: "babel-loader",
         exclude: /node_modules/,
       },
