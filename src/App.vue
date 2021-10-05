@@ -1,27 +1,38 @@
 <template>
   <div id="app">
-    <h1>{{ title }}</h1>
+    <x-header />
+    <x-main />
+    <x-footer />
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
+import XHeader from "@/components/XHeader.vue";
+import XMain from "@/components/XMain.vue";
+import XFooter from "@/components/XFooter.vue";
 
 export default Vue.extend({
-  data() {
-    return {
-      title: "Hello",
-    };
-  },
+  components: { XHeader, XMain, XFooter },
 });
 </script>
 
 <style lang="scss">
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0 10px;
+
+  @media screen and (min-width: 640px) {
+    padding: 0;
+  }
+}
+
+p,
+h1 {
+  margin: 0;
 }
 </style>
