@@ -1,5 +1,7 @@
 module.exports = {
+  plugins: ["@babel/plugin-transform-typescript"],
   presets: [
+    "@babel/preset-typescript",
     [
       "@babel/preset-env",
       {
@@ -8,6 +10,10 @@ module.exports = {
         },
       },
     ],
-    "babel-preset-typescript-vue",
   ],
+  env: {
+    test: {
+      presets: [["@babel/preset-env", { targets: { node: "current" } }]],
+    },
+  },
 };

@@ -1,7 +1,6 @@
 <template>
   <div id="app">
     <h1>{{ title }}</h1>
-    <h3>{{ defineAutorName }}</h3>
   </div>
 </template>
 
@@ -12,18 +11,7 @@ export default Vue.extend({
   data() {
     return {
       title: "Hello",
-      author: "Dima",
     };
-  },
-  computed: {
-    defineAutorName(): string {
-      return this.author ? this.author : "unknown";
-    },
-  },
-  methods: {
-    changeTitle() {
-      this.title = "Fuck";
-    },
   },
 });
 </script>
