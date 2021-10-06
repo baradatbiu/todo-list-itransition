@@ -30,6 +30,7 @@ export default Vue.extend({
       const newTodo: Todo = {
         date: localDateString,
         text: this.todoText,
+        completed: false,
       };
 
       this.$emit("addTodo", newTodo);

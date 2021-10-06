@@ -21,7 +21,11 @@ describe("TodoAdd.vue", () => {
 
   it("submitting form with input value make emit with expected parameters", async () => {
     const checkInputValue = "new todo";
-    const expectedTodo = { date: expect.any(String), text: checkInputValue };
+    const expectedTodo = {
+      date: expect.any(String),
+      text: checkInputValue,
+      completed: false,
+    };
 
     await wrapper.find("input").setValue(checkInputValue);
     await wrapper.find("form").trigger("submit.prevent");
