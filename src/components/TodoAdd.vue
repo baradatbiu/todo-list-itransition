@@ -1,5 +1,5 @@
 <template>
-  <form class="todo-add-component" @submit.prevent="addTodo">
+  <form @submit.prevent="addTodo">
     <md-field>
       <label>New to-do</label>
       <md-input
@@ -39,9 +39,3 @@ export default Vue.extend({
   },
 });
 </script>
-
-<style lang="scss" scoped>
-.todo-add-component {
-  margin-bottom: 30px;
-}
-</style>

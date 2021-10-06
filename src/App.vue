@@ -20,19 +20,12 @@ export default Vue.extend({
 <style lang="scss">
 #app {
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 0 10px;
+  max-width: 500px;
+  width: 90%;
+  margin: 0 auto;
 
   @media screen and (min-width: 640px) {
-    padding: 0;
+    width: 100%;
   }
-}
-
-p,
-h1 {
-  margin: 0;
 }
 </style>
