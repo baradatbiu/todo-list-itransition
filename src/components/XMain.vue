@@ -20,7 +20,7 @@ export default Vue.extend({
   },
   methods: {
     onAddTodo(todo: Todo) {
-      this.todoList.push(todo);
+      this.todoList.unshift(todo);
     },
   },
 });
