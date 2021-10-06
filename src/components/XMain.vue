@@ -1,5 +1,5 @@
 <template>
-  <main class="main-component">
+  <main class="main">
     <todo-add @addTodo="addTodo" />
     <br />
     <pre>{{ todoList }}</pre>
@@ -27,10 +27,8 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-.main-component {
-  min-height: 100px;
-  max-width: 500px;
-  width: 100%;
-  margin-bottom: 30px;
+.main {
+  display: flex;
+  flex-direction: column;
 }
 </style>
