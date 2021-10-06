@@ -1,10 +1,12 @@
-import { mount } from '@vue/test-utils'
-import XFooter from '@/components/XFooter.vue'
+import { mount } from "@vue/test-utils";
+import XFooter from "@/components/XFooter.vue";
 
-describe('XFooter.vue', () => {
-  const wrapper = mount(XFooter)
+describe("XFooter.vue", () => {
+  const wrapper = mount(XFooter);
 
-  it('display corrected text', () => {
-    expect(wrapper.html()).toContain('Made by Kharlamov')
-  })
-})
+  it("display corrected text", () => {
+    expect(wrapper.html()).toContain(
+      'Made by <a href="https://github.com/baradatbiu">Kharlamov</a>'
+    );
+  });
+});
