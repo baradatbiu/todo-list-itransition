@@ -3,7 +3,7 @@
     <md-field>
       <label>New to-do</label>
       <md-input
-        v-model="newTodo"
+        v-model="todoText"
         placeholder="Write here"
         maxlength="70"
       ></md-input>
@@ -18,23 +18,23 @@ import { Todo } from "@/types/todo";
 export default Vue.extend({
   data() {
     return {
-      newTodo: "",
+      todoText: "",
     };
   },
   methods: {
     addTodo() {
-      if (this.newTodo === "") return;
+      if (this.todoText === "") return;
 
-      const nowDate = new Date();
+      const localDateString = new Date().toLocaleString();
 
-      const todo: Todo = {
-        date: nowDate.toLocaleString(),
-        text: this.newTodo,
+      const newTodo: Todo = {
+        date: localDateString,
+        text: this.todoText,
       };
 
-      this.$emit("addTodo", todo);
+      this.$emit("addTodo", newTodo);
 
-      this.newTodo = "";
+      this.todoText = "";
     },
   },
 });
