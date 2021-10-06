@@ -20,6 +20,10 @@ module.exports = {
         use: "babel-loader",
         exclude: /node_modules/,
       },
+      {
+        test: /\.svg/,
+        type: "asset/inline",
+      },
     ],
   },
   resolve: {
