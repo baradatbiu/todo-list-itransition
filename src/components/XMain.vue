@@ -1,6 +1,6 @@
 <template>
   <main class="main">
-    <todo-add @addTodo="addTodo" />
+    <todo-add @addTodo="onAddTodo" />
     <br />
     <pre>{{ todoList }}</pre>
   </main>
@@ -19,7 +19,7 @@ export default Vue.extend({
     };
   },
   methods: {
-    addTodo(todo: Todo) {
+    onAddTodo(todo: Todo) {
       this.todoList.push(todo);
     },
   },
