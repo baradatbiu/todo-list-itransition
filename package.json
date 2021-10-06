@@ -7,7 +7,7 @@
   "scripts": {
     "serve": "webpack serve --open --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
-    "eslint": "eslint --color --ext .ts,.vue src",
+    "eslint": "eslint --color --ext .ts,.vue",
     "eslint:fix": "npm run eslint -- --fix",
     "test": "jest"
   },
