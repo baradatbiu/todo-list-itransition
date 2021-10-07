@@ -13,6 +13,11 @@
         ></todo-item>
       </md-list>
     </div>
+    <todo-settings
+      v-show="todoList.length"
+      :all-completed="allCompleted"
+      @changeStatusAllTodo="onChangeStatusAllTodo"
+    />
   </main>
 </template>
 
@@ -20,15 +25,21 @@
 import Vue from "vue";
 import TodoAdd from "@/components/TodoAdd.vue";
 import TodoItem from "@/components/TodoItem.vue";
+import TodoSettings from "./TodoSettings.vue";
 
 import { Todo, TodoItems } from "@/types/todo";
 
 export default Vue.extend({
-  components: { TodoAdd, TodoItem },
+  components: { TodoAdd, TodoItem, TodoSettings },
   data() {
     return {
       todoList: [] as TodoItems,
     };
+  },
+  computed: {
+    allCompleted(): boolean {
+      return this.todoList.every(({ completed }) => completed);
+    },
   },
   methods: {
     onAddTodo(todo: Todo) {
@@ -38,6 +49,12 @@ export default Vue.extend({
       const todo = this.todoList.find((todo) => todo.id === id);
 
       if (todo) todo.completed = completed;
+    },
+    onChangeStatusAllTodo(status: boolean) {
+      this.todoList = this.todoList.map((todo) => ({
+        ...todo,
+        completed: status,
+      }));
     },
     onUpdateTodo(todo: Todo) {
       this.todoList = this.todoList.filter(({ id }) => id !== todo.id);
