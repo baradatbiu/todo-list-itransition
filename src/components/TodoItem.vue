@@ -1,22 +1,33 @@
 <template>
   <md-list-item>
-    <md-checkbox v-model="isCompleted" />
-    <div class="md-list-item-text">
-      <span :class="{ completed: todo.completed }">{{ todo.text }}</span>
-      <time>{{ todo.date }}</time>
-    </div>
-    <div class="todo-btns">
-      <md-button
-        v-show="!todo.completed"
-        class="md-icon-button md-list-action"
-        @click.stop="updateTodo"
-      >
-        <md-icon :md-src="require('@/icons/edit.svg')"></md-icon>
-      </md-button>
-      <md-button class="md-icon-button md-list-action" @click.stop="removeTodo">
-        <md-icon :md-src="require('@/icons/delete.svg')"></md-icon>
-      </md-button>
-    </div>
+    <form v-if="editorMode" @submit.prevent="updateTodo">
+      <md-field md-clearable>
+        <label>Change to-do</label>
+        <md-input v-model="todoText" maxlength="70"></md-input>
+      </md-field>
+    </form>
+    <template v-else>
+      <md-checkbox v-model="isCompleted" />
+      <div class="md-list-item-text">
+        <span :class="{ completed: todo.completed }">{{ todo.text }}</span>
+        <time>{{ todo.date }}</time>
+      </div>
+      <div class="todo-btns">
+        <md-button
+          v-show="!todo.completed"
+          class="md-icon-button md-list-action"
+          @click.stop="editorMode = true"
+        >
+          <md-icon :md-src="require('@/icons/edit.svg')"></md-icon>
+        </md-button>
+        <md-button
+          class="md-icon-button md-list-action"
+          @click.stop="removeTodo"
+        >
+          <md-icon :md-src="require('@/icons/delete.svg')"></md-icon>
+        </md-button>
+      </div>
+    </template>
   </md-list-item>
 </template>
 
@@ -36,6 +47,7 @@ export default Vue.extend({
     return {
       isCompleted: this.todo.completed,
       todoText: this.todo.text,
+      editorMode: false,
     };
   },
   watch: {
@@ -45,13 +57,17 @@ export default Vue.extend({
   },
   methods: {
     updateTodo() {
+      const localDateString = getLocalDateString(Date.now());
+
       const updatedTodo: Todo = {
         ...this.todo,
-        date: getLocalDateString(Date.now()),
+        date: `${localDateString} (edited)`,
         text: this.todoText,
       };
 
       this.$emit("updateTodo", updatedTodo);
+
+      this.editorMode = false;
     },
     removeTodo() {
       this.$emit("removeTodo", this.todo.id);
@@ -67,6 +83,10 @@ export default Vue.extend({
     opacity: 1;
     pointer-events: all;
   }
+}
+
+form {
+  width: 100%;
 }
 
 .todo-btns {
