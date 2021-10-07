@@ -51,6 +51,9 @@ export default Vue.extend({
     };
   },
   watch: {
+    "todo.completed"(completed) {
+      this.isCompleted = completed;
+    },
     isCompleted(completed) {
       this.$emit("changeTodoStatus", { id: this.todo.id, completed });
     },
