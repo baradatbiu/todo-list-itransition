@@ -1,16 +1,25 @@
 <template>
   <div class="filter">
-    <md-checkbox v-model="allTodoStatus" @change="changeStatusAllTodo" />
-    <div class="filter__radio">
-      <md-radio v-model="filter" value="all">All</md-radio>
-      <md-radio v-model="filter" value="completed">Completed</md-radio>
-      <md-radio v-model="filter" value="active">Active</md-radio>
+    <md-checkbox
+      v-model="allTodoStatus"
+      @change="$emit('changeStatusAllTodo', allTodoStatus)"
+    />
+    <div>
+      <md-radio
+        v-for="value in filters"
+        :key="value"
+        v-model="filter"
+        :value="value"
+        @change="$emit('changeTodoFilter', filter)"
+        >{{ value }}</md-radio
+      >
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
+import { TodoFilters } from "@/types/todo";
 
 export default Vue.extend({
   props: {
@@ -21,7 +30,8 @@ export default Vue.extend({
   },
   data() {
     return {
-      filter: "all",
+      filters: TodoFilters,
+      filter: TodoFilters.All,
       allTodoStatus: this.allCompleted,
     };
   },
@@ -30,17 +40,12 @@ export default Vue.extend({
       this.allTodoStatus = status;
     },
   },
-  methods: {
-    changeStatusAllTodo() {
-      this.$emit("changeStatusAllTodo", this.allTodoStatus);
-    },
-  },
 });
 </script>
 
 <style lang="scss" scoped>
 .filter {
-  padding: 16px;
+  padding: 16px 0 16px 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;

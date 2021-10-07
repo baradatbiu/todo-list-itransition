@@ -113,4 +113,8 @@ form {
   opacity: 0.5;
   text-decoration: line-through;
 }
+
+.md-list-item-content > .md-checkbox:first-child {
+  margin-right: 16px;
+}
 </style>

@@ -2,9 +2,9 @@
   <main class="main">
     <todo-add @addTodo="onAddTodo" />
     <div class="todo-list">
-      <md-list v-show="todoList.length" class="md-double-line">
+      <md-list v-show="filteredTodos.length" class="md-double-line">
         <todo-item
-          v-for="todo in todoList"
+          v-for="todo in filteredTodos"
           :key="todo.id"
           :todo="todo"
           @changeTodoStatus="onChangeTodoStatus"
@@ -17,6 +17,7 @@
       v-show="todoList.length"
       :all-completed="allCompleted"
       @changeStatusAllTodo="onChangeStatusAllTodo"
+      @changeTodoFilter="filter = $event"
     />
   </main>
 </template>
@@ -27,18 +28,31 @@ import TodoAdd from "@/components/TodoAdd.vue";
 import TodoItem from "@/components/TodoItem.vue";
 import TodoSettings from "./TodoSettings.vue";
 
-import { Todo, TodoItems } from "@/types/todo";
+import { Todo, TodoFilters, TodoItems } from "@/types/todo";
 
 export default Vue.extend({
   components: { TodoAdd, TodoItem, TodoSettings },
   data() {
     return {
       todoList: [] as TodoItems,
+      filter: TodoFilters.All,
     };
   },
   computed: {
     allCompleted(): boolean {
       return this.todoList.every(({ completed }) => completed);
+    },
+    filteredTodos(): TodoItems {
+      switch (this.filter) {
+        case TodoFilters.Completed:
+          return this.todoList.filter(({ completed }) => completed);
+
+        case TodoFilters.Active:
+          return this.todoList.filter(({ completed }) => !completed);
+
+        default:
+          return this.todoList;
+      }
     },
   },
   methods: {
