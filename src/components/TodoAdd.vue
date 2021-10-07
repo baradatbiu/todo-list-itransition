@@ -3,7 +3,7 @@
     <md-field>
       <label>New to-do</label>
       <md-input
-        v-model="todoText"
+        v-model.trim="todoText"
         placeholder="Write here"
         maxlength="70"
       ></md-input>
@@ -19,7 +19,7 @@ import { getLocalDateString } from "@/utils/dateFormatter";
 export default Vue.extend({
   data() {
     return {
-      todoText: "",
+      todoText: "" as Todo["text"],
     };
   },
   methods: {

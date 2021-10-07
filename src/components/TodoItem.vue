@@ -3,7 +3,7 @@
     <form v-if="editorMode" @submit.prevent="updateTodo">
       <md-field md-clearable>
         <label>Change to-do</label>
-        <md-input v-model="todoText" maxlength="70"></md-input>
+        <md-input v-model.trim="todoText" maxlength="70"></md-input>
       </md-field>
     </form>
     <template v-else>
@@ -12,21 +12,21 @@
         <span :class="{ completed: todo.completed }">{{ todo.text }}</span>
         <time>{{ todo.date }}</time>
       </div>
-      <div class="todo-btns">
-        <md-button
-          v-show="!todo.completed"
-          class="md-icon-button md-list-action"
-          @click.stop="editorMode = true"
-        >
-          <md-icon :md-src="require('@/icons/edit.svg')"></md-icon>
+      <md-menu class="todo-btns" md-direction="bottom-end">
+        <md-button class="md-icon-button" md-menu-trigger @click.stop>
+          <md-icon :md-src="require('@/icons/more-vert.svg')"></md-icon>
         </md-button>
-        <md-button
-          class="md-icon-button md-list-action"
-          @click.stop="removeTodo"
-        >
-          <md-icon :md-src="require('@/icons/delete.svg')"></md-icon>
-        </md-button>
-      </div>
+        <md-menu-content>
+          <md-menu-item v-show="!todo.completed" @click="showEditForm">
+            <span>Edit</span>
+            <md-icon :md-src="require('@/icons/edit.svg')"></md-icon>
+          </md-menu-item>
+          <md-menu-item @click="removeTodo">
+            <span>Delete</span>
+            <md-icon :md-src="require('@/icons/delete.svg')"></md-icon>
+          </md-menu-item>
+        </md-menu-content>
+      </md-menu>
     </template>
   </md-list-item>
 </template>
@@ -56,13 +56,16 @@ export default Vue.extend({
     },
   },
   methods: {
+    showEditForm() {
+      this.editorMode = true;
+    },
     updateTodo() {
       const localDateString = getLocalDateString(Date.now());
 
       const updatedTodo: Todo = {
         ...this.todo,
         date: `${localDateString} (edited)`,
-        text: this.todoText,
+        text: this.todoText || this.todo.text,
       };
 
       this.$emit("updateTodo", updatedTodo);
