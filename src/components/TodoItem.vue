@@ -2,11 +2,15 @@
   <md-list-item>
     <md-checkbox v-model="isCompleted" />
     <div class="md-list-item-text">
-      <span>{{ todo.text }}</span>
+      <span :class="{ completed: todo.completed }">{{ todo.text }}</span>
       <time>{{ todo.date }}</time>
     </div>
-    <div v-show="!todo.completed" class="todo-list__btns">
-      <md-button class="md-icon-button md-list-action" @click.stop="editTodo">
+    <div class="todo-btns">
+      <md-button
+        v-show="!todo.completed"
+        class="md-icon-button md-list-action"
+        @click.stop="updateTodo"
+      >
         <md-icon :md-src="require('@/icons/edit.svg')"></md-icon>
       </md-button>
       <md-button class="md-icon-button md-list-action" @click.stop="removeTodo">
@@ -19,6 +23,7 @@
 <script lang="ts">
 import Vue, { PropType } from "vue";
 import { Todo } from "@/types/todo";
+import { getLocalDateString } from "@/utils/dateFormatter";
 
 export default Vue.extend({
   props: {
@@ -34,24 +39,22 @@ export default Vue.extend({
     };
   },
   watch: {
-    isComleted(isCompleted) {
-      this.$emit("updateTodo", { ...this.todo, completed: isCompleted });
+    isCompleted(completed) {
+      this.$emit("changeTodoStatus", { id: this.todo.id, completed });
     },
   },
   methods: {
-    editTodo() {
-      const localDateString = new Date().toLocaleString();
-
+    updateTodo() {
       const updatedTodo: Todo = {
         ...this.todo,
-        date: localDateString,
+        date: getLocalDateString(Date.now()),
         text: this.todoText,
       };
 
       this.$emit("updateTodo", updatedTodo);
     },
     removeTodo() {
-      this.$emit("removeTodo", this.todo);
+      this.$emit("removeTodo", this.todo.id);
     },
   },
 });
@@ -59,19 +62,14 @@ export default Vue.extend({
 
 //
 <style lang="scss" scoped>
-.todo-list {
-  min-height: 200px;
-  padding: 15px 0;
-}
-
 .md-list-item:hover {
-  .todo-list__btns {
+  .todo-btns {
     opacity: 1;
     pointer-events: all;
   }
 }
 
-.todo-list__btns {
+.todo-btns {
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s;
@@ -83,5 +81,10 @@ export default Vue.extend({
 
 .md-list-item-text time {
   font-size: 0.7em;
+}
+
+.md-list-item-text .completed {
+  opacity: 0.5;
+  text-decoration: line-through;
 }
 </style>
