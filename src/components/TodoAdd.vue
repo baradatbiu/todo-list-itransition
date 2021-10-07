@@ -14,6 +14,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { Todo } from "@/types/todo";
+import { getLocalDateString } from "@/utils/dateFormatter";
 
 export default Vue.extend({
   data() {
@@ -25,9 +26,11 @@ export default Vue.extend({
     addTodo() {
       if (this.todoText === "") return;
 
-      const localDateString = new Date().toLocaleString();
+      const nowDate = Date.now();
+      const localDateString = getLocalDateString(nowDate);
 
       const newTodo: Todo = {
+        id: nowDate,
         date: localDateString,
         text: this.todoText,
         completed: false,

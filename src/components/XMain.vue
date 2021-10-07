@@ -5,8 +5,9 @@
       <md-list v-show="todoList.length" class="md-double-line">
         <todo-item
           v-for="todo in todoList"
-          :key="todo.date"
+          :key="todo.id"
           :todo="todo"
+          @changeTodoStatus="onChangeTodoStatus"
           @updateTodo="onUpdateTodo"
           @removeTodo="onRemoveTodo"
         ></todo-item>
@@ -33,13 +34,18 @@ export default Vue.extend({
     onAddTodo(todo: Todo) {
       this.todoList.unshift(todo);
     },
-    onUpdateTodo(todo: Todo) {
-      console.log(todo);
+    onChangeTodoStatus({ id, completed }: Todo) {
+      const todo = this.todoList.find((todo) => todo.id === id);
+
+      if (todo) todo.completed = completed;
     },
-    onRemoveTodo(removeTodo: Todo) {
-      this.todoList = this.todoList.filter(
-        (todo) => todo.date !== removeTodo.date
-      );
+    onUpdateTodo(todo: Todo) {
+      this.todoList = this.todoList.filter(({ id }) => id !== todo.id);
+
+      this.todoList.unshift(todo);
+    },
+    onRemoveTodo(removeTodoId: Todo["id"]) {
+      this.todoList = this.todoList.filter(({ id }) => id !== removeTodoId);
     },
   },
 });
@@ -54,26 +60,5 @@ export default Vue.extend({
 .todo-list {
   min-height: 200px;
   padding: 15px 0;
-}
-
-.md-list-item:hover {
-  .todo-list__btns {
-    opacity: 1;
-    pointer-events: all;
-  }
-}
-
-.todo-list__btns {
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s;
-}
-
-.md-list-item:not(:last-child) {
-  border-bottom: 1px solid #eeeeee;
-}
-
-.md-list-item-text time {
-  font-size: 0.7em;
 }
 </style>
