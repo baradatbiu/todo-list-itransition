@@ -58,7 +58,7 @@ export default Vue.extend({
 }
 
 .todo-list {
-  min-height: 200px;
+  min-height: 120px;
   padding: 15px 0;
 }
 </style>

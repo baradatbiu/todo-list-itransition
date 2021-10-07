@@ -18,6 +18,10 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
+body {
+  overflow: hidden;
+}
+
 #app {
   min-height: 100vh;
   max-width: 500px;

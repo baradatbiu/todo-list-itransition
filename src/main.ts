@@ -8,6 +8,7 @@ import MdRadio from "vue-material/dist/components/MdRadio";
 import MdCheckbox from "vue-material/dist/components/MdCheckbox";
 import MdList from "vue-material/dist/components/MdList";
 import MdIcon from "vue-material/dist/components/MdIcon";
+import MdMenu from "vue-material/dist/components/MdMenu";
 import "vue-material/dist/vue-material.min.css";
 import "vue-material/dist/theme/default.css";
 
@@ -17,6 +18,7 @@ Vue.use(MdField);
 Vue.use(MdRadio);
 Vue.use(MdList);
 Vue.use(MdIcon);
+Vue.use(MdMenu);
 
 Vue.config.productionTip = false;
 
