@@ -3,10 +3,11 @@ const { merge } = require("webpack-merge");
 const common = require("./webpack.common.js");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
+const BundleAnalyzerPlugin =
+  require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
 module.exports = merge(common, {
   mode: "production",
-  devtool: "source-map",
   module: {
     rules: [
       {
@@ -28,6 +29,7 @@ module.exports = merge(common, {
         },
       ],
     }),
+    new BundleAnalyzerPlugin(),
   ],
   optimization: {
     runtimeChunk: "single",
