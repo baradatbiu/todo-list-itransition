@@ -28,6 +28,7 @@ import TodoAdd from "@/components/TodoAdd.vue";
 import TodoItem from "@/components/TodoItem.vue";
 import TodoSettings from "./TodoSettings.vue";
 
+import { getTodos, setTodos } from "@/storage/todoStorage";
 import { Todo, TodoFilters, TodoItems } from "@/types/todo";
 
 export default Vue.extend({
@@ -54,6 +55,17 @@ export default Vue.extend({
           return this.todoList;
       }
     },
+  },
+  watch: {
+    todoList: {
+      handler(todos) {
+        setTodos(todos);
+      },
+      deep: true,
+    },
+  },
+  mounted() {
+    this.todoList = getTodos();
   },
   methods: {
     onAddTodo(todo: Todo) {

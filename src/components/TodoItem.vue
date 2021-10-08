@@ -8,8 +8,8 @@
     </form>
     <template v-else>
       <md-checkbox v-model="isCompleted" />
-      <div class="md-list-item-text">
-        <span :class="{ completed: todo.completed }">{{ todo.text }}</span>
+      <div class="md-list-item-text" :class="{ completed: todo.completed }">
+        <span>{{ todo.text }}</span>
         <time>{{ todo.date }}</time>
       </div>
       <md-menu class="todo-btns" md-direction="bottom-end">
@@ -105,13 +105,20 @@ form {
   border-bottom: 1px solid #eeeeee;
 }
 
-.md-list-item-text time {
-  font-size: 0.7em;
-}
+.md-list-item-text {
+  transition: all 0.3s;
 
-.md-list-item-text .completed {
-  opacity: 0.5;
-  text-decoration: line-through;
+  &.completed {
+    opacity: 0.4;
+
+    span {
+      text-decoration: line-through;
+    }
+  }
+
+  time {
+    font-size: 0.7em;
+  }
 }
 
 .md-list-item-content > .md-checkbox:first-child {

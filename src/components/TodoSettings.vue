@@ -45,7 +45,7 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .filter {
-  padding: 16px 0 16px 16px;
+  padding-left: 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
