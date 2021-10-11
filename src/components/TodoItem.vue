@@ -1,12 +1,12 @@
 <template>
   <md-list-item>
-    <form v-if="editorMode" @submit.prevent="updateTodo">
+    <form v-show="editorMode" @submit.prevent="updateTodo">
       <md-field md-clearable>
         <label>Change to-do</label>
         <md-input v-model.trim="todoText" maxlength="70"></md-input>
       </md-field>
     </form>
-    <template v-else>
+    <div v-show="!editorMode" class="todo-item">
       <md-checkbox v-model="isCompleted" />
       <div class="md-list-item-text" :class="{ completed: todo.completed }">
         <span>{{ todo.text }}</span>
@@ -27,7 +27,7 @@
           </md-menu-item>
         </md-menu-content>
       </md-menu>
-    </template>
+    </div>
   </md-list-item>
 </template>
 
@@ -46,7 +46,7 @@ export default Vue.extend({
   data() {
     return {
       isCompleted: this.todo.completed,
-      todoText: this.todo.text,
+      todoText: "",
       editorMode: false,
     };
   },
@@ -60,6 +60,7 @@ export default Vue.extend({
   },
   methods: {
     showEditForm() {
+      this.todoText = this.todo.text;
       this.editorMode = true;
     },
     updateTodo() {
@@ -92,6 +93,13 @@ export default Vue.extend({
 
 form {
   width: 100%;
+}
+
+.todo-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .todo-btns {
