@@ -1,4 +1,4 @@
-import { mount, createLocalVue } from "@vue/test-utils";
+import { mount, createLocalVue, Wrapper } from "@vue/test-utils";
 import TodoSettings from "@/components/TodoSettings.vue";
 import MdRadio from "vue-material/dist/components/MdRadio";
 import MdCheckbox from "vue-material/dist/components/MdCheckbox";
@@ -11,9 +11,13 @@ localVue.use(MdRadio);
 localVue.use(MdCheckbox);
 
 describe("TodoSettings.vue", () => {
-  const wrapper = mount(TodoSettings, {
-    localVue,
-    propsData: { allCompleted: false },
+  let wrapper: Wrapper<Vue>;
+
+  beforeEach(() => {
+    wrapper = mount(TodoSettings, {
+      localVue,
+      propsData: { allCompleted: false },
+    });
   });
 
   it("changing prop value allCompleted changes allTodoStatus data filed", async () => {
@@ -32,22 +36,21 @@ describe("TodoSettings.vue", () => {
   it("include checkbox input", () => {
     const checkboxInput = wrapper.find("input[type='checkbox']");
 
-    expect(checkboxInput.exists()).toBe(true);
+    expect(checkboxInput.exists()).toBeTruthy();
   });
 
   it("click to checkbox make emit with expected parameters", async () => {
+    const checkStatus = !wrapper.props("allCompleted");
     const checkboxWrapper = wrapper.find("input[type='checkbox']");
     const checkboxInput = checkboxWrapper.element as HTMLInputElement;
-    const initialCheckboxStatus = wrapper.props("allCompleted");
 
-    checkboxInput.checked = initialCheckboxStatus;
     await checkboxWrapper.trigger("click");
     await checkboxWrapper.trigger("change");
 
-    expect(checkboxInput.checked).toBe(!initialCheckboxStatus);
+    expect(checkboxInput.checked).toBe(checkStatus);
 
     expect(wrapper.emitted("changeStatusAllTodo")).toMatchObject([
-      [!initialCheckboxStatus],
+      [checkStatus],
     ]);
   });
 

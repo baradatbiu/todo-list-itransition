@@ -10,7 +10,7 @@ describe("TodoAdd.vue", () => {
   const wrapper = mount(TodoAdd, { localVue });
 
   it("include form with input", () => {
-    expect(wrapper.find("form input").exists()).toBe(true);
+    expect(wrapper.find("form input").exists()).toBeTruthy();
   });
 
   it("submitting form with empty input value not make emit", async () => {
