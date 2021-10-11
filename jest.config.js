@@ -12,7 +12,6 @@ module.exports = {
   },
   transformIgnorePatterns: ["/node_modules/"],
   collectCoverage: true,
-  collectCoverageFrom: ["src/components/**/*.{ts,vue}"],
+  collectCoverageFrom: ["src/components/**/*.vue", "src/utils/**/*.ts"],
   coverageReporters: ["html", "text-summary"],
-  testMatch: ["**/tests/unit/**/*.spec.ts|**/__tests__/*.ts"],
 };
