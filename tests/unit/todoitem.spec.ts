@@ -1,4 +1,4 @@
-import { mount, createLocalVue } from "@vue/test-utils";
+import { mount, createLocalVue, Wrapper } from "@vue/test-utils";
 import TodoItem from "@/components/TodoItem.vue";
 import MdList from "vue-material/dist/components/MdList";
 import MdField from "vue-material/dist/components/MdField";
@@ -25,21 +25,18 @@ const todo: Todo = {
 };
 
 describe("TodoItem.vue", () => {
-  const wrapper = mount(TodoItem, {
-    localVue,
-    propsData: { todo },
+  let wrapper: Wrapper<Vue>;
+
+  beforeEach(() => {
+    wrapper = mount(TodoItem, { localVue, propsData: { todo } });
   });
 
   it("submitting form make emit with expected parameters", async () => {
     const menuButton = wrapper.find("button");
-
     await menuButton.trigger("click");
 
-    const editButton = wrapper.find(".md-menu-content button");
-
+    const editButton = wrapper.findAll(".md-menu-content button").at(0);
     await editButton.trigger("click");
-
-    expect(wrapper.vm.$data.editorMode).toBe(true);
 
     const checkInputValue = "updated todo";
     const expectedTodo: Todo = {
@@ -52,8 +49,34 @@ describe("TodoItem.vue", () => {
     await wrapper.find("form").trigger("submit.prevent");
 
     expect(wrapper.emitted("updateTodo")).toMatchObject([[expectedTodo]]);
+  });
 
+  it("submitting form with empty input set old 'todo.text' value", async () => {
+    const menuButton = wrapper.find("button");
     await menuButton.trigger("click");
+
+    const editButton = wrapper.findAll(".md-menu-content button").at(0);
+    await editButton.trigger("click");
+
+    const expectedTodo: Todo = {
+      ...todo,
+      date: expect.stringContaining("(edited)"),
+    };
+
+    await wrapper.find("input").setValue("");
+    await wrapper.find("form").trigger("submit.prevent");
+
+    expect(wrapper.emitted("updateTodo")).toMatchObject([[expectedTodo]]);
+  });
+
+  it("remove todo make emit with expected parameters", async () => {
+    const menuButton = wrapper.find("button");
+    await menuButton.trigger("click");
+
+    const removeButton = wrapper.findAll(".md-menu-content button").at(1);
+    await removeButton.trigger("click");
+
+    expect(wrapper.emitted("removeTodo")).toMatchObject([[todo.id]]);
   });
 
   it("click to checkbox make emit with expected parameters", async () => {
@@ -71,27 +94,8 @@ describe("TodoItem.vue", () => {
 
   it("changing todo.completed field changes data isCompleted", async () => {
     const initialProp = wrapper.props().todo.completed;
-
     await wrapper.setProps({ todo: { ...todo, completed: !initialProp } });
 
     expect(wrapper.vm.$data.isCompleted).toBe(!initialProp);
-  });
-
-  it("remove todo make emit with expected parameters", async () => {
-    const checkboxWrapper = wrapper.find("input[type='checkbox']");
-    const checkboxInput = checkboxWrapper.element as HTMLInputElement;
-    const menuButton = wrapper.find("button");
-
-    checkboxInput.checked = false;
-    await checkboxWrapper.trigger("click");
-    await checkboxWrapper.trigger("change");
-
-    await menuButton.trigger("click");
-
-    const removeButton = wrapper.findAll(".md-menu-content button").at(1);
-
-    await removeButton.trigger("click");
-
-    expect(wrapper.emitted("removeTodo")).toMatchObject([[todo.id]]);
   });
 });
