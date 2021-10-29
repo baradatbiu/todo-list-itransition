@@ -1,7 +1,7 @@
 import { shallowMount, createLocalVue } from "@vue/test-utils";
 import XMain from "@/components/XMain.vue";
 import MdList from "vue-material/dist/components/MdList";
-import { Todo, TodoItems, TodoFilters } from "@/types/todo";
+import { Todo, TodoItems, TodoStatuses } from "@/types/todo";
 
 const localVue = createLocalVue();
 localVue.use(MdList);
@@ -18,7 +18,7 @@ describe("XMain.vue", () => {
   const vmData = wrapper.vm.$data;
 
   it("display expected number completed todo-item elements", async () => {
-    await wrapper.setData({ filter: TodoFilters.Completed });
+    await wrapper.setData({ filter: TodoStatuses.Completed });
 
     const todoElements = wrapper.findAll("todo-item-stub");
 
@@ -28,7 +28,7 @@ describe("XMain.vue", () => {
   });
 
   it("display expected number active todo-item elements", async () => {
-    await wrapper.setData({ filter: TodoFilters.Active });
+    await wrapper.setData({ filter: TodoStatuses.Active });
 
     const todoElements = wrapper.findAll("todo-item-stub");
 
@@ -38,7 +38,7 @@ describe("XMain.vue", () => {
   });
 
   it("display expected number all todo-item elements", async () => {
-    await wrapper.setData({ filter: TodoFilters.All });
+    await wrapper.setData({ filter: TodoStatuses.All });
 
     const todoElements = wrapper.findAll("todo-item-stub");
 

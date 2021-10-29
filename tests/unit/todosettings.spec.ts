@@ -2,9 +2,9 @@ import { mount, createLocalVue, Wrapper } from "@vue/test-utils";
 import TodoSettings from "@/components/TodoSettings.vue";
 import MdRadio from "vue-material/dist/components/MdRadio";
 import MdCheckbox from "vue-material/dist/components/MdCheckbox";
-import { TodoFilters } from "@/types/todo";
+import { TodoStatuses } from "@/types/todo";
 
-const filters = Object.keys(TodoFilters);
+const filters = Object.keys(TodoStatuses);
 
 const localVue = createLocalVue();
 localVue.use(MdRadio);
@@ -61,7 +61,7 @@ describe("TodoSettings.vue", () => {
   });
 
   it("change radio input value make emit with expected parameters", async () => {
-    const checkedFilterValue = TodoFilters.Completed;
+    const checkedFilterValue = TodoStatuses.Completed;
     const radioWrapper = wrapper.find(
       `input[type='radio'][value=${checkedFilterValue}]`
     );

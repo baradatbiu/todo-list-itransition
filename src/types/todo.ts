@@ -7,7 +7,7 @@ export type Todo = {
 
 export type TodoItems = Todo[];
 
-export enum TodoFilters {
+export enum TodoStatuses {
   All = "all",
   Completed = "completed",
   Active = "active",
