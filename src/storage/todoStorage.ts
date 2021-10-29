@@ -3,9 +3,10 @@ import { TodoItems } from "./../types/todo";
 const KEY = "TODOS_IT";
 
 export function getTodos(): TodoItems {
-  const todos = JSON.parse(localStorage.getItem(KEY) || "[]");
+  const defaultValue = [] as TodoItems;
+  const value = localStorage.getItem(KEY);
 
-  return todos;
+  return value ? JSON.parse(value) : defaultValue;
 }
 
 export function setTodos(todos: TodoItems): void {
