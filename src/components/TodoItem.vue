@@ -1,12 +1,13 @@
 <template>
   <md-list-item>
-    <form v-show="editorMode" @submit.prevent="updateTodo">
-      <md-field md-clearable>
+    <form v-if="editorMode" @submit.prevent="updateTodo">
+      <md-field :class="{ 'md-invalid': !validatedTodo }" md-clearable>
         <label>Change to-do</label>
-        <md-input v-model.trim="todoText" maxlength="70" />
+        <md-input v-model.trim="todoText" maxlength="70" required />
+        <span class="md-error">This is a required field</span>
       </md-field>
     </form>
-    <div v-show="!editorMode" class="todo-item">
+    <div v-else class="todo-item">
       <md-checkbox v-model="isCompleted" />
       <div class="md-list-item-text" :class="{ completed: todo.completed }">
         <span>{{ todo.text }}</span>
@@ -50,6 +51,11 @@ export default Vue.extend({
       editorMode: false,
     };
   },
+  computed: {
+    validatedTodo(): boolean {
+      return Boolean(this.todoText);
+    },
+  },
   watch: {
     "todo.completed"(completed) {
       this.isCompleted = completed;
@@ -64,12 +70,14 @@ export default Vue.extend({
       this.editorMode = true;
     },
     updateTodo() {
+      if (!this.validatedTodo) return;
+
       const localDateString = getLocalDateString(Date.now());
 
       const updatedTodo: Todo = {
         ...this.todo,
         date: `${localDateString} (edited)`,
-        text: this.todoText || this.todo.text,
+        text: this.todoText,
       };
 
       this.$emit("updateTodo", updatedTodo);
