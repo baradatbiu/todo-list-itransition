@@ -32,11 +32,7 @@ describe("TodoItem.vue", () => {
   });
 
   it("submitting form make emit with expected parameters", async () => {
-    const menuButton = wrapper.find("button");
-    await menuButton.trigger("click");
-
-    const editButton = wrapper.findAll(".md-menu-content button").at(0);
-    await editButton.trigger("click");
+    await wrapper.setData({ editorMode: true });
 
     const checkInputValue = "updated todo";
     const expectedTodo: Todo = {
@@ -51,22 +47,13 @@ describe("TodoItem.vue", () => {
     expect(wrapper.emitted("updateTodo")).toMatchObject([[expectedTodo]]);
   });
 
-  it("submitting form with empty input set old 'todo.text' value", async () => {
-    const menuButton = wrapper.find("button");
-    await menuButton.trigger("click");
-
-    const editButton = wrapper.findAll(".md-menu-content button").at(0);
-    await editButton.trigger("click");
-
-    const expectedTodo: Todo = {
-      ...todo,
-      date: expect.stringContaining("(edited)"),
-    };
+  it("submitting form with empty input show error", async () => {
+    await wrapper.setData({ editorMode: true });
 
     await wrapper.find("input").setValue("");
     await wrapper.find("form").trigger("submit.prevent");
 
-    expect(wrapper.emitted("updateTodo")).toMatchObject([[expectedTodo]]);
+    expect(wrapper.emitted("updateTodo")).toBeFalsy();
   });
 
   it("remove todo make emit with expected parameters", async () => {
