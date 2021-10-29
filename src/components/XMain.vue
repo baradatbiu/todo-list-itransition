@@ -10,7 +10,7 @@
           @changeTodoStatus="onChangeTodoStatus"
           @updateTodo="onUpdateTodo"
           @removeTodo="onRemoveTodo"
-        ></todo-item>
+        />
       </md-list>
     </div>
     <todo-settings
