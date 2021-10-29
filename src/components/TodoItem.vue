@@ -1,12 +1,13 @@
 <template>
   <md-list-item>
-    <form v-show="editorMode" @submit.prevent="updateTodo">
-      <md-field md-clearable>
+    <form v-if="editorMode" @submit.prevent="updateTodo">
+      <md-field :class="{ 'md-invalid': !validatedTodo }" md-clearable>
         <label>Change to-do</label>
-        <md-input v-model.trim="todoText" maxlength="70"></md-input>
+        <md-input v-model.trim="todoText" maxlength="70" required />
+        <span class="md-error">This is a required field</span>
       </md-field>
     </form>
-    <div v-show="!editorMode" class="todo-item">
+    <div v-else class="todo-item">
       <md-checkbox v-model="isCompleted" />
       <div class="md-list-item-text" :class="{ completed: todo.completed }">
         <span>{{ todo.text }}</span>
@@ -14,16 +15,16 @@
       </div>
       <md-menu class="todo-btns" md-direction="bottom-end">
         <md-button class="md-icon-button" md-menu-trigger @click.stop>
-          <md-icon :md-src="require('@/icons/more-vert.svg')"></md-icon>
+          <md-icon :md-src="require('@/icons/more-vert.svg')" />
         </md-button>
         <md-menu-content>
           <md-menu-item v-show="!todo.completed" @click="showEditForm">
             <span>Edit</span>
-            <md-icon :md-src="require('@/icons/edit.svg')"></md-icon>
+            <md-icon :md-src="require('@/icons/edit.svg')" />
           </md-menu-item>
           <md-menu-item @click="removeTodo">
             <span>Delete</span>
-            <md-icon :md-src="require('@/icons/delete.svg')"></md-icon>
+            <md-icon :md-src="require('@/icons/delete.svg')" />
           </md-menu-item>
         </md-menu-content>
       </md-menu>
@@ -50,6 +51,11 @@ export default Vue.extend({
       editorMode: false,
     };
   },
+  computed: {
+    validatedTodo(): boolean {
+      return Boolean(this.todoText);
+    },
+  },
   watch: {
     "todo.completed"(completed) {
       this.isCompleted = completed;
@@ -64,12 +70,14 @@ export default Vue.extend({
       this.editorMode = true;
     },
     updateTodo() {
+      if (!this.validatedTodo) return;
+
       const localDateString = getLocalDateString(Date.now());
 
       const updatedTodo: Todo = {
         ...this.todo,
         date: `${localDateString} (edited)`,
-        text: this.todoText || this.todo.text,
+        text: this.todoText,
       };
 
       this.$emit("updateTodo", updatedTodo);

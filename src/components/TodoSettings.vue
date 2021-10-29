@@ -19,7 +19,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { TodoFilters } from "@/types/todo";
+import { TodoStatuses } from "@/types/todo";
 
 export default Vue.extend({
   props: {
@@ -30,8 +30,8 @@ export default Vue.extend({
   },
   data() {
     return {
-      filters: TodoFilters,
-      filter: TodoFilters.All,
+      filters: TodoStatuses,
+      filter: TodoStatuses.All,
       allTodoStatus: this.allCompleted,
     };
   },

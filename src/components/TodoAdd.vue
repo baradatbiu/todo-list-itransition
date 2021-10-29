@@ -6,7 +6,7 @@
         v-model.trim="todoText"
         placeholder="Write here"
         maxlength="70"
-      ></md-input>
+      />
     </md-field>
   </form>
 </template>

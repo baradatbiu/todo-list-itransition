@@ -10,7 +10,7 @@
           @changeTodoStatus="onChangeTodoStatus"
           @updateTodo="onUpdateTodo"
           @removeTodo="onRemoveTodo"
-        ></todo-item>
+        />
       </md-list>
     </div>
     <todo-settings
@@ -29,14 +29,14 @@ import TodoItem from "@/components/TodoItem.vue";
 import TodoSettings from "./TodoSettings.vue";
 
 import { getTodos, setTodos } from "@/storage/todoStorage";
-import { Todo, TodoFilters, TodoItems } from "@/types/todo";
+import { Todo, TodoStatuses, TodoItems } from "@/types/todo";
 
 export default Vue.extend({
   components: { TodoAdd, TodoItem, TodoSettings },
   data() {
     return {
       todoList: [] as TodoItems,
-      filter: TodoFilters.All,
+      filter: TodoStatuses.All,
     };
   },
   computed: {
@@ -45,10 +45,10 @@ export default Vue.extend({
     },
     filteredTodos(): TodoItems {
       switch (this.filter) {
-        case TodoFilters.Completed:
+        case TodoStatuses.Completed:
           return this.todoList.filter(({ completed }) => completed);
 
-        case TodoFilters.Active:
+        case TodoStatuses.Active:
           return this.todoList.filter(({ completed }) => !completed);
 
         default:
